@@ -1,0 +1,21 @@
+img {
+    max-width: 100%;
+}
+.leftbox {
+    float:left;
+    padding-top: 1%;
+    align-items: center;
+    width:20%;
+    margin-left: 10%;
+    height:280px;
+}
+.rightbox{
+    float:left;
+    align-items: center;
+    width:50%;
+    height:280px;
+}
+h3{
+    color:rgba(31, 4, 4, 0.986);
+    text-align:center;
+}

@@ -1,0 +1,48 @@
+{% include 'header.html' %}
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <style>
+            {% include 'css/home.css' %}
+    </style>
+    <body>
+        <div id='parent'>
+        </div>
+        <div style="text-align:center;" hidden id="pagination">
+            <input type="button" id="first" onclick="firstPage()" value="first" disabled/>
+            <input type="button" id="next" onclick="nextPage()" value="next" disabled/>
+            <input type="button" id="previous" onclick="previousPage()" value="previous" disabled/>
+            <input type="button" id="last" onclick="lastPage()" value="last" disabled/>
+        </div>
+    </body>
+    <script>
+{% include 'js/jquery.cookies.js' %}
+{% include 'js/ajax_setup.js' %}
+{% include 'js/pagination.js' %}
+
+    $("#btn").click(function(){
+    var movie_name=document.getElementById("movie_name").value;
+      $.ajax({
+        type:"POST",
+        url:"",
+        data:{
+            'movie_name':movie_name,
+            'ajax':1
+        },
+        dataType: 'json',
+        success:function(l){
+			list=[];
+            $.each(l,function(i,value){
+                $("#pagination").show();
+				list.push(value);
+				firstPage();
+				getNumberOfPages();
+            });
+      }
+    });   
+    });
+    </script>
+</html>
