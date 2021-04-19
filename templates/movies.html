@@ -1,5 +1,61 @@
-<form action = "" method = "get">
-    <label for="your_name">Movie name: </label>
-    <input id="your_name" type="text" name="your_name">
-    <input type="submit" value="OK">
-</form>
+  
+{% include 'header.html' %}
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <style>
+        {% include 'css/home.css' %}
+    </style>
+    <body>
+                <script>
+                    var list = new Array();
+                    '{% for i in results %}'
+                    var dict = {};
+                    dict['title']=('{{i.title}}');
+                    dict['pic']=('{{i.poster_path}}');
+                    dict['overview']=('{{i.overview}}');
+                    dict['release_date']=('{{i.release_date}}');
+                    dict['vote_average']=('{{i.vote_average}}');
+                    dict['movie_id']=('{{i.id}}');
+                    list.push(dict);
+                    '{% endfor %}'
+                </script>
+                <div id='parent'>
+                </div>
+            <div style="text-align:center;" id="pagination">
+                <input type="button" id="first" onclick="firstPage()" value="first"/>
+                <input type="button" id="next" onclick="nextPage()" value="next"/>
+                <input type="button" id="previous" onclick="previousPage()" value="previous"/>
+                <input type="button" id="last" onclick="lastPage()" value="last"/>
+            </div>
+    </body>
+    <script>
+        {% include 'js/jquery.cookies.js' %}
+        {% include 'js/pagination.js' %}
+        {% include 'js/ajax_setup.js' %}
+            loadList();
+            var val;
+            function fav_mov(e) {
+                val=document.getElementsByName('button')
+                console.log(e);
+        // Making the AJAX Request
+        $.ajax({
+            type: "POST",
+            data: {
+                name: e,
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            },
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+    </script>
+</html>

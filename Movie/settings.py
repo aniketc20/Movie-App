@@ -70,6 +70,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Movie.wsgi.application'
+AUTH_USER_MODEL = 'App.Account'
 
 
 # Database

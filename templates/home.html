@@ -4,45 +4,51 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     </head>
     <style>
-            {% include 'css/home.css' %}
+            
+            .mySlides {display:none;}
+            .text {
+                color: #020000;
+                font-size: 15px;
+                padding: 8px 12px;
+                position: absolute;
+                bottom: 8px;
+                width: 100%;
+                text-align: center;
+            }
+            .fade {
+                -webkit-animation-name: fade;
+                -webkit-animation-duration: 1.5s;
+                animation-name: fade;
+                animation-duration: 1.5s;
+            }
+            .slideshow-container {
+                max-width: 1000px;
+                position: relative;
+                margin: auto;
+            }
+            img {
+                vertical-align: middle; 
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 400px;
+            }
     </style>
     <body>
-        <div id='parent'>
+        <div id='parent_trend' class="slideshow-container">
+            {% for i in trending_movies %}
+            <div class="mySlides fade">
+                <img src="https://image.tmdb.org/t/p/w185_and_h278_bestv2/{{ i.poster_path }}"><br><br>
+                <div class="text">{{i.title}} {{i.original_name}}</div>
+            </div>
+            {% endfor %}
         </div>
-        <div style="text-align:center;" hidden id="pagination">
-            <input type="button" id="first" onclick="firstPage()" value="first" disabled/>
-            <input type="button" id="next" onclick="nextPage()" value="next" disabled/>
-            <input type="button" id="previous" onclick="previousPage()" value="previous" disabled/>
-            <input type="button" id="last" onclick="lastPage()" value="last" disabled/>
-        </div>
+        
     </body>
     <script>
-{% include 'js/jquery.cookies.js' %}
-{% include 'js/ajax_setup.js' %}
-{% include 'js/pagination.js' %}
-
-    $("#btn").click(function(){
-    var movie_name=document.getElementById("movie_name").value;
-      $.ajax({
-        type:"POST",
-        url:"",
-        data:{
-            'movie_name':movie_name,
-            'ajax':1
-        },
-        dataType: 'json',
-        success:function(l){
-			list=[];
-            $.each(l,function(i,value){
-                $("#pagination").show();
-				list.push(value);
-				firstPage();
-				getNumberOfPages();
-            });
-      }
-    });   
-    });
+        {% include 'js/slideshow.js' %}
     </script>
 </html>

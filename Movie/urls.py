@@ -17,9 +17,17 @@ from django.contrib import admin
 from django.urls import path
 from App.views import (
     home,
+    search_results,
+    login_view,
+    registration_view,
+    logout_view
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home, name='home')
+    path('', home, name='home'),
+    path('searchbar/', search_results, name='searchbar'),
+    path('login/', login_view, name='login_view'),
+    path('register/', registration_view, name='registration_view'),
+    path('logout/', logout_view, name="logout"),
 ]

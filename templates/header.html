@@ -82,12 +82,20 @@ body {
 <body>
 
 <div class="topnav">
-  <a class="active" href="#home">Home</a>
+  <a class="active" href="{% url 'home' %}">Home</a>
   <a href="#about">About</a>
-  <a href="#contact">Contact</a>
+  {% if user.is_authenticated %}
+  Welcome, {{ user }}
+    <a class="p-2 text-dark" href="{% url 'logout' %}">Logout</a>
+  {% else %}
+    <a href="{% url 'registration_view' %}">Regsiter</a>
+    <a href="{% url 'login_view' %}">Login</a>
+  {% endif %}
   <div class="search-container">
+    <form action="{% url 'searchbar' %}" method="GET">
       <input type="text" placeholder="Search.." name="search" id="movie_name">
-      <button type="submit" id='btn'><i class="fa fa-search"></i></button>
+      <button id='btn'><i class="fa fa-search"></i></button>
+    </form>
   </div>
 </div>
 </body>
