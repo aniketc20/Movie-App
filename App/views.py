@@ -16,34 +16,32 @@ def home(request):
     trend = f'{base_url}trending/all/day?api_key={my_api_key}'
     response = requests.get(trend)
     l = response.json()['results']
-    '''if request.method == "POST":
-        if "ajax" in request.POST:
-            movie_name = request.POST.get("movie_name")
-            url = f'{base_url}search/movie/?api_key={my_api_key}&language=en-US&query={movie_name}&page=1'
-            response = requests.get(url)
-            l = response.json()['results']
-            hr = JsonResponse(l, safe=False)
-            return render(request, 'movies.html', {'hr': hr})
-            return hr'''
     return render(request, 'home.html', {'trending_movies': l})
 
 def search_results(request):
     user = request.user
+    fav_mov_list = Movie.objects.all()
     if request.method == "POST":
-        movie_id = request.POST.get("name")
-        m = Movie.objects.filter(movie_id=movie_id)
-        if m:
-            m[0].user.add(user)
-        else:
-            movie = Movie(movie_id=movie_id)
-            movie.save()
-            movie.user.add(user)
-        return JsonResponse({"msg":"Saved.", })
+        if 'ajax' in request.POST:
+            movie_id = request.POST.get("name")
+            m = Movie.objects.filter(movie_id=movie_id)
+            if m:
+                m[0].user.add(user)
+            else:
+                movie = Movie(movie_id=movie_id)
+                movie.save()
+                movie.user.add(user)
+            return JsonResponse({"msg":movie_id, })
+        if 'remove' in request.POST:
+            movie_id = request.POST.get("name")
+            m = Movie.objects.filter(movie_id=movie_id)
+            m[0].user.remove(user)
+            return JsonResponse({"msg":movie_id, })
     search = request.GET.get('search')
     url = f'{base_url}search/movie/?api_key={my_api_key}&language=en-US&query={search}&page=1'
     response = requests.get(url)
     l = response.json()['results']
-    return render(request, 'movies.html', {'results': l})
+    return render(request, 'movies.html', {'results': l, 'fav_mov_list': fav_mov_list})
 
 def login_view(request):
     context = {}

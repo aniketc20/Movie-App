@@ -85,7 +85,7 @@ body {
   <a class="active" href="{% url 'home' %}">Home</a>
   <a href="#about">About</a>
   {% if user.is_authenticated %}
-  Welcome, {{ user }}
+    Welcome, {{ user }}
     <a class="p-2 text-dark" href="{% url 'logout' %}">Logout</a>
   {% else %}
     <a href="{% url 'registration_view' %}">Regsiter</a>
