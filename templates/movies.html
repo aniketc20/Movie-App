@@ -4,6 +4,7 @@
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     </head>
     <style>
         {% include 'css/home.css' %}
@@ -13,6 +14,13 @@
                     var list = new Array();
                     '{% for i in results %}'
                     var dict = {};
+                    var actor_details = new Array();
+                    '{% for m in i.cast %}'
+                    {
+                        actor_details.push('{{m}}');
+                    }
+                    '{% endfor %}'
+                    dict['cast'] = actor_details;
                     dict['title']=('{{i.title}}');
                     dict['pic']=('{{i.poster_path}}');
                     dict['overview']=('{{i.overview}}');

@@ -41,6 +41,19 @@ def search_results(request):
     url = f'{base_url}search/movie/?api_key={my_api_key}&language=en-US&query={search}&page=1'
     response = requests.get(url)
     l = response.json()['results']
+    for i in l:
+        movie_cast_url = f'{base_url}/movie/{i["id"]}/credits?api_key={my_api_key}&language=en-US&query={search}&page=1'
+        response = requests.get(movie_cast_url)
+        movie_cast = response.json()['cast']
+        count = 0
+        actors = []
+        for j in movie_cast:
+            if count==10:
+                break
+            actors.append(str(j['profile_path']))
+            actors.append(str(j['name']))
+            count = count+1
+        i['cast']=actors
     return render(request, 'movies.html', {'results': l, 'fav_mov_list': fav_mov_list})
 
 def login_view(request):
