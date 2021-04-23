@@ -1,6 +1,5 @@
   
 {% include 'header.html' %}
-{% load static %}
 <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -13,7 +12,7 @@
     <body>
                 <script>
                     var list = new Array();
-                    '{% for i in results %}'
+                    '{% for i in fav_mov_list %}'
                     var dict = {};
                     var actor_details = new Array();
                     '{% for m in i.cast %}'
@@ -28,19 +27,7 @@
                     dict['release_date']=('{{i.release_date}}');
                     dict['vote_average']=('{{i.vote_average}}');
                     dict['movie_id']=('{{i.id}}');
-                    dict['fav']=('No');
-                        '{% for j in fav_mov_list %}'
-                        {
-                            '{% for l in j.user.all %}'
-                            {
-                                if ('{{ i.id }}'=='{{j.movie_id}}' && '{{l}}'=='{{user}}')
-                                {
-                                    dict['fav']=('Yes');
-                                }
-                            }
-                            '{% endfor %}'
-                        }
-                        '{% endfor %}'
+                    dict['fav']=('Yes');
                     list.push(dict);
                     '{% endfor %}'
                 </script>
@@ -55,36 +42,9 @@
     </body>
     <script>
         {% include 'js/jquery.cookies.js' %}
-        {% include 'js/pagination.js' %}
+        {% include 'js/favourites.js' %}
         {% include 'js/ajax_setup.js' %}
             loadList();
-            function fav_mov(e) {
-                // Making the AJAX Request
-                $.ajax({
-                    type: "POST",
-                    data: {
-                        name: e,
-                        'ajax':1,
-                    },
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    },
-                    success: function (data) {
-                        for (r = 0; r < list.length; r++)
-                        {
-                            if(list[r]['movie_id']==data['msg'])
-                            {
-                                list[r]['fav']='Yes';
-                            }
-                        }
-                        drawList();
-                        console.log("save called");
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
-            }
             function rem_fav_mov(e) {
                 // Making the AJAX Request
                 $.ajax({

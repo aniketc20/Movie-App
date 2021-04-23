@@ -1,54 +1,59 @@
 {% include 'header.html' %}
+{% load static %}
 <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!--Jquery-->
+        <script>
+            {% include 'js/lightslider.js' %}
+        </script>
+
     </head>
     <style>
-            
-            .mySlides {display:none;}
-            .text {
-                color: #020000;
-                font-size: 15px;
-                padding: 8px 12px;
-                position: absolute;
-                bottom: 8px;
-                width: 100%;
-                text-align: center;
-            }
-            .fade {
-                -webkit-animation-name: fade;
-                -webkit-animation-duration: 1.5s;
-                animation-name: fade;
-                animation-duration: 1.5s;
-            }
-            .slideshow-container {
-                max-width: 1000px;
-                position: relative;
-                margin: auto;
-            }
-            img {
-                vertical-align: middle; 
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                width: 400px;
-            }
+            {% include 'css/lightslider.css' %}
+            {% include 'css/style.css' %}
     </style>
     <body>
-        <div id='parent_trend' class="slideshow-container">
+        <h1 class="ratings" style="text-align: center; font-family: Georgia">Trending this Week</h1>
+        <div class="container">
+            <!--slider------------------->
+            <ul id="autoWidth" class="cs-hidden">
+                
+            <!--1------------------------------>
             {% for i in trending_movies %}
-            <div class="mySlides fade">
-                <img src="https://image.tmdb.org/t/p/w185_and_h278_bestv2/{{ i.poster_path }}"><br><br>
-                <div class="text">{{i.title}} {{i.original_name}}</div>
+            <li class="item-a">
+            <!--slider-box-->
+            <div class="box">
+            <p class="marvel" style="text-align: center; font-family: Georgia">{{i.title}} {{i.original_name}}</p>
+            <!--model-->
+            <img class="model" src="https://image.tmdb.org/t/p/w185_and_h278_bestv2/{{ i.poster_path }}">
+            <!--details-->
+            
+            <!--logo-character-->
+            <br>
+            <span class="ratings">Starring: </span><span class="cast_trend_movies">
+                {% for m in i.cast %}
+                    {{m}} |
+                    {% endfor %}
+            </span>
+            <div class="one">
+                <div>
+                    <img src="{% static 'star.png' %}" style="height: 24px; width:24px;"/>
+                </div>
+                <div>
+                    <h4 class="ratings">{{i.vote_average}}</h4>
+                </div>
             </div>
+            </li>
             {% endfor %}
+            <!--2------------------------------>
+            </ul>
         </div>
-        
     </body>
     <script>
-        {% include 'js/slideshow.js' %}
+            {% include 'js/script.js' %}
     </script>
 </html>

@@ -15,12 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls.static import static
+from django.conf import settings
 from App.views import (
     home,
     search_results,
     login_view,
     registration_view,
-    logout_view
+    logout_view,
+    my_movies
 )
 
 urlpatterns = [
@@ -30,4 +33,5 @@ urlpatterns = [
     path('login/', login_view, name='login_view'),
     path('register/', registration_view, name='registration_view'),
     path('logout/', logout_view, name="logout"),
-]
+    path('favourites/', my_movies, name="favourites"),
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

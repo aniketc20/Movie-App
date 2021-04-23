@@ -1,26 +1,37 @@
-img {
-    max-width: 100%;
-}
 .leftbox {
   margin: auto;
-  width: 70%;
+  width: 60%;
   height: 900%;
-  background: rgb(14, 13, 13);
+  background: rgb(36, 34, 34);
   padding: 10px;
   border: 3px solid yellow;
   border-bottom-style: none;
+}
+
+.one {
+  display: flex;
+  align-items: center;
+}
+
+.saveicon {
+  opacity: 0.5;
+}
+
+.saveicon:hover {
+  opacity: 1.0;
+  cursor: pointer;
 }
 
 .poster {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 40%;
-    height: 40%;
+    width: 30%;
+    height: 30%;
   }
 .rightbox{
   margin: auto;
-  width: 70%;
+  width: 60%;
   height: 900%;
   border: 3px solid yellow;
   padding: 10px;
@@ -37,6 +48,6 @@ figure {
     display: inline-block;
 }
 body{
-    background-color: #010203;
+    background-color: #010203fa;
     text-decoration-color: aliceblue;
 }
