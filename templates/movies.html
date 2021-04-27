@@ -1,6 +1,7 @@
   
 {% include 'header.html' %}
 {% load static %}
+{% load embed_video_tags %}
 <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -9,6 +10,33 @@
     </head>
     <style>
         {% include 'css/home.css' %}
+        .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+}
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
     </style>
     <body>
                 <script>
@@ -52,12 +80,21 @@
                 <input type="button" id="previous" onclick="previousPage()" value="previous"/>
                 <input type="button" id="last" onclick="lastPage()" value="last"/>
             </div>
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content" id='content'>
+                </div>
+  
+            </div>
     </body>
     <script>
         {% include 'js/jquery.cookies.js' %}
         {% include 'js/pagination.js' %}
         {% include 'js/ajax_setup.js' %}
             loadList();
+            var modal = document.getElementById("myModal");
             function fav_mov(e) {
                 // Making the AJAX Request
                 $.ajax({
@@ -106,6 +143,40 @@
                         }
                         drawList();
                         console.log("remove called");
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+
+            function cast(e){
+                // Making the AJAX Request
+                $.ajax({
+                    type: "POST",
+                    data: {
+                        name: e,
+                        'cast':1,
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    },
+                    success: function (data) {
+                        modal.style.display = "block";
+                        $("#content").append("<div align=center><iframe width=100% height=600 src=https://www.youtube.com/embed/"+data['trailer']+"></iframe></div><h1>Cast:</h1><br>");
+                        for (i=0; i < data['cast'].length; i++)
+                        {
+                            if(data['cast'][i]['pic'])
+                            {
+                                $("#content").append("<figure><img src=https://image.tmdb.org/t/p/w185_and_h278_bestv2"+data['cast'][i]['pic']+" width=100% height=100%> <figcaption>"+data['cast'][i]['name']+"</figcaption></figure>");
+                            }
+                        }
+                        $("#content").prepend('<span class="close">&times;</span>');
+                        var span = document.getElementsByClassName("close")[0];
+                        span.onclick = function() {
+                            modal.style.display = "none";
+                            $("#content").text('');
+                            }
                     },
                     error: function (error) {
                         console.log(error);

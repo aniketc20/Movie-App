@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import http.client, json, requests
 from .forms import AccountAuthenticationForm, RegistrationForm
 from .models import Account, Movie
+import time
 
 
 # Create your views here.
@@ -46,14 +47,18 @@ def home(request):
     return render(request, 'home.html', {'trending_movies': l})
 
 def search_results(request):
+    start = time.time()
     user = request.user
     fav_mov_list = Movie.objects.all()
-    if request.method == "POST":
+    search = request.GET.get('search')
+    if request.method == "POST": # AJAX POST Request to Add Fav Movie to DB
         if 'ajax' in request.POST:
             movie_id = request.POST.get("name")
             m = Movie.objects.filter(movie_id=movie_id)
+            # checks if movie already present in the DB
             if m:
                 m[0].user.add(user)
+            # adds it to the DB if movie not present in DB
             else:
                 movie = Movie(movie_id=movie_id)
                 movie.save()
@@ -64,24 +69,33 @@ def search_results(request):
             m = Movie.objects.filter(movie_id=movie_id)
             m[0].user.remove(user)
             return JsonResponse({"msg":movie_id, })
-    search = request.GET.get('search')
+        if 'cast' in request.POST:
+            movie_id = request.POST.get("name")
+            movie_cast_url = f'{base_url}/movie/{movie_id}/credits?api_key={my_api_key}&page=1'
+            trailer_url = f'{base_url}movie/{movie_id}/videos?api_key={my_api_key}&language=en-US'
+            response = requests.get(movie_cast_url)
+            trailer_response = requests.get(trailer_url)
+            movie_cast_api = response.json()['cast']
+            trailer = trailer_response.json()['results'][0]['key']
+            movie_cast = []
+            count = 0
+            while count<len(movie_cast_api)-1:
+                d = {}
+                d['name'] = movie_cast_api[count]['name']
+                d['pic'] = movie_cast_api[count]['profile_path']
+                movie_cast.append(d)
+                count = count + 1
+                if count>15:
+                    return JsonResponse({"cast":movie_cast, "trailer": trailer})
+            return JsonResponse({"cast":movie_cast, "trailer": trailer})
     url = f'{base_url}search/movie/?api_key={my_api_key}&language=en-US&query={search}&page=1'
     response = requests.get(url)
     l = response.json()['results']
+    movies = []
     for i in l:
-        movie_cast_url = f'{base_url}/movie/{i["id"]}/credits?api_key={my_api_key}&language=en-US&query={search}&page=1'
-        response = requests.get(movie_cast_url)
-        movie_cast = response.json()['cast']
-        count = 0
-        actors = []
-        for j in movie_cast:
-            if count==10:
-                break
-            actors.append(str(j['profile_path']))
-            actors.append(str(j['name']))
-            count = count+1
-        i['cast']=actors
-    return render(request, 'movies.html', {'results': l, 'fav_mov_list': fav_mov_list})
+        if (i['poster_path']):
+            movies.append(i)
+    return render(request, 'movies.html', {'results': movies, 'fav_mov_list': fav_mov_list})
 
 def login_view(request):
     context = {}
