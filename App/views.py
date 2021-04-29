@@ -14,7 +14,13 @@ my_api_key = '9e8c5a314d6ac88caafdf94f375f64c3'
 base_url = 'https://api.themoviedb.org/3/'
 
 def home(request):
-    video = requests.get('https://www.youtube.com/watch?v=6ZfuNTqbHE8')
+    if request.method == "POST":
+        if 'trailer' in request.POST:
+            movie_id = request.POST.get("name")
+            trailer_url = f'{base_url}movie/{movie_id}/videos?api_key={my_api_key}&language=en-US'
+            trailer_response = requests.get(trailer_url)
+            trailer = trailer_response.json()['results'][0]['key']
+            return JsonResponse({"trailer": trailer})
     trend = f'{base_url}trending/all/day?api_key={my_api_key}'
     response = requests.get(trend)
     l = response.json()['results']
@@ -49,8 +55,6 @@ def home(request):
 def search_results(request):
     start = time.time()
     user = request.user
-    fav_mov_list = Movie.objects.all()
-    search = request.GET.get('search')
     if request.method == "POST": # AJAX POST Request to Add Fav Movie to DB
         if 'ajax' in request.POST:
             movie_id = request.POST.get("name")
@@ -88,6 +92,8 @@ def search_results(request):
                 if count>15:
                     return JsonResponse({"cast":movie_cast, "trailer": trailer})
             return JsonResponse({"cast":movie_cast, "trailer": trailer})
+    fav_mov_list = Movie.objects.all()
+    search = request.GET.get('search')
     url = f'{base_url}search/movie/?api_key={my_api_key}&language=en-US&query={search}&page=1'
     response = requests.get(url)
     l = response.json()['results']
