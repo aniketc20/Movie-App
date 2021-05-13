@@ -10,4 +10,4 @@ This app fetches data from 'THE MOVIE DATABASE' API and shows the user the detai
   1. Search for a movie
   2. Add movies to favourites
   3. Watch the trailer and cast
-https://user-images.githubusercontent.com/56171163/118180096-c6787380-b453-11eb-949c-b09396f7f283.mp4
+https://user-images.githubusercontent.com/56171163/118180096-c6787380-b453-11eb-949c-b09396f7f283.gif
