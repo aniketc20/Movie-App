@@ -1,0 +1,17 @@
+{% include 'header.html' %}
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <style>
+        
+    </style>
+    <body>
+        <form method="post">
+            {% csrf_token %}
+            {{ login_form }}
+            <input name="login" id="login" class="btn btn-block login-btn" type="submit" value="Login">
+        </form>
+    </body>
+</html>

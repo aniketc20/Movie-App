@@ -1,0 +1,158 @@
+  
+{% include 'header.html' %}
+{% load static %}
+{% load embed_video_tags %}
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    </head>
+    <style>
+        {% include 'css/home.css' %}
+    </style>
+    <body>
+                <div id='parent'>
+                </div>
+            <div style="text-align:center;" id="pagination">
+                <input type="button" id="first" onclick="firstPage()" value="first"/>
+                <input type="button" id="next" onclick="nextPage()" value="next"/>
+                <input type="button" id="previous" onclick="previousPage()" value="previous"/>
+                <input type="button" id="last" onclick="lastPage()" value="last"/>
+            </div>
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content" id='content'>
+                </div>
+  
+            </div>
+    </body>
+    <script>
+        {% include 'js/jquery.cookies.js' %}
+        var list = new Array();
+        '{% for i in results %}'
+        var dict = {};
+        var actor_details = new Array();
+            '{% for m in i.cast %}'
+                {
+                actor_details.push('{{m}}');
+                }
+            '{% endfor %}'
+            dict['cast'] = actor_details;
+            dict['title']=('{{i.title}}');
+            dict['pic']=('{{i.poster_path}}');
+            dict['overview']=('{{i.overview}}');
+            dict['release_date']=('{{i.release_date}}');
+            dict['vote_average']=('{{i.vote_average}}');
+            dict['movie_id']=('{{i.id}}');
+            dict['fav']=('No');
+            '{% for j in fav_mov_list %}'
+                {
+                    '{% for l in j.user.all %}'
+                        {
+                            if ('{{ i.id }}'=='{{j.movie_id}}' && '{{l}}'=='{{user}}')
+                                {
+                                    dict['fav']=('Yes');
+                                }
+                        }
+                    '{% endfor %}'
+                }
+            '{% endfor %}'
+            list.push(dict);
+        '{% endfor %}'
+        {% include 'js/pagination.js' %}
+        {% include 'js/ajax_setup.js' %}
+            loadList();
+            var modal = document.getElementById("myModal");
+            function fav_mov(e) {
+                // Making the AJAX Request
+                $.ajax({
+                    type: "POST",
+                    data: {
+                        name: e,
+                        'ajax':1,
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    },
+                    success: function (data) {
+                        for (r = 0; r < list.length; r++)
+                        {
+                            if(list[r]['movie_id']==data['msg'])
+                            {
+                                list[r]['fav']='Yes';
+                            }
+                        }
+                        drawList();
+                        console.log("save called");
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+            function rem_fav_mov(e) {
+                // Making the AJAX Request
+                $.ajax({
+                    type: "POST",
+                    data: {
+                        name: e,
+                        'remove':1,
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    },
+                    success: function (data) {
+                        for (r = 0; r < list.length; r++)
+                        {
+                            if(list[r]['movie_id']==data['msg'])
+                            {
+                                list[r]['fav']='No';
+                            }
+                        }
+                        drawList();
+                        console.log("remove called");
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+
+            function cast(e){
+                // Making the AJAX Request
+                $.ajax({
+                    type: "POST",
+                    data: {
+                        name: e,
+                        'cast':1,
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    },
+                    success: function (data) {
+                        modal.style.display = "block";
+                        $("#content").append("<div align=center><iframe width=100% height=600 src=https://www.youtube.com/embed/"+data['trailer']+"></iframe></div><h1>Cast:</h1><br>");
+                        for (i=0; i < data['cast'].length; i++)
+                        {
+                            if(data['cast'][i]['pic'])
+                            {
+                                $("#content").append("<figure><img src=https://image.tmdb.org/t/p/w185_and_h278_bestv2"+data['cast'][i]['pic']+" width=100% height=100%> <figcaption>"+data['cast'][i]['name']+"</figcaption></figure>");
+                            }
+                        }
+                        $("#content").prepend('<span class="close">&times;</span>');
+                        var span = document.getElementsByClassName("close")[0];
+                        span.onclick = function() {
+                            modal.style.display = "none";
+                            $("#content").text('');
+                            }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+    </script>
+</html>

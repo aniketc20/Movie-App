@@ -1,0 +1,81 @@
+.leftbox {
+  margin: auto;
+  width: 60%;
+  height: 900%;
+  background: rgb(36, 34, 34);
+  padding: 10px;
+  border: 3px solid yellow;
+  border-bottom-style: none;
+}
+
+.one {
+  display: flex;
+  align-items: center;
+}
+
+.saveicon {
+  opacity: 0.5;
+}
+
+.saveicon:hover {
+  opacity: 1.0;
+  cursor: pointer;
+}
+
+.poster {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    height: 30%;
+  }
+.rightbox{
+  margin: auto;
+  width: 60%;
+  height: 900%;
+  border: 3px solid yellow;
+  padding: 10px;
+  color: aliceblue;
+  border-top-style: none;
+}
+h3{
+    color:aliceblue;
+    text-align:center;
+}
+figure {
+    width: 10%;
+    height: 10%;
+    display: inline-block;
+}
+body{
+    background-color: #010203fa;
+    text-decoration-color: aliceblue;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+}
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
