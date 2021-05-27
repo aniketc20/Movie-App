@@ -27,7 +27,7 @@ SECRET_KEY = '5-po0+miq_v)-@pb2u5(9!&o22&r7@bod_a*&0ow_ygy1d^#hn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['aniketmovieapp.herokuapp.com']
+ALLOWED_HOSTS = ['aniketmovieapp.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -81,8 +81,12 @@ AUTH_USER_MODEL = 'App.Account'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd874dg5s0nou3v',
+        'HOST': 'ec2-54-87-112-29.compute-1.amazonaws.com',
+        'PORT': '5432   ',
+        'USER': 'ifmnuoxsjayrkq',
+        'PASSWORD': '8ac01c37d2814469f5bd034d14853fdda215a06acdd0f59858ea00e611eac0cd',
     }
 }
 
