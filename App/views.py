@@ -52,11 +52,18 @@ def home(request):
             i['cast']=actors
     return render(request, 'home.html', {'trending_movies': l})
 
+'''
+The below function gets called once the user
+searches for a particular movie/series. Handles
+adding and removing movies from watchlist, display
+related searched movies. We have called the POST request
+to display the different related movies that the user
+might have searched for.
+'''
 def search_results(request):
-    start = time.time()
     user = request.user
-    if request.method == "POST": # AJAX POST Request to Add Fav Movie to DB
-        if 'ajax' in request.POST:
+    if request.method == "POST":
+        if 'save' in request.POST:
             movie_id = request.POST.get("name")
             m = Movie.objects.filter(movie_id=movie_id)
             # checks if movie already present in the DB
@@ -83,13 +90,16 @@ def search_results(request):
             trailer = trailer_response.json()['results'][0]['key']
             movie_cast = []
             count = 0
+            '''
+            Displaying 15 cast members of the movie/series
+            '''
             while count<len(movie_cast_api)-1:
                 d = {}
                 d['name'] = movie_cast_api[count]['name']
                 d['pic'] = movie_cast_api[count]['profile_path']
                 movie_cast.append(d)
                 count = count + 1
-                if count>15:
+                if count>=15:
                     return JsonResponse({"cast":movie_cast, "trailer": trailer})
             return JsonResponse({"cast":movie_cast, "trailer": trailer})
     fav_mov_list = Movie.objects.all()
@@ -106,6 +116,11 @@ def search_results(request):
 def login_view(request):
     context = {}
     user = request.user
+    '''
+    It checks whether the user credentials
+    provided is present in our DB and then redirects back to
+    home page.
+    '''
     if user.is_authenticated:
         return redirect("home")
 

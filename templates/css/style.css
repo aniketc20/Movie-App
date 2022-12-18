@@ -3,11 +3,7 @@
 body{
 	margin:0px;
 	padding:0px;
-<<<<<<< HEAD
-	background-color: black;
-=======
 	background:url("/static/register.jpg");
->>>>>>> 762d8d3c86a60385dee630e7bbc3c49c1bc742ba
 }
 
 .one {

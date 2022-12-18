@@ -15,10 +15,7 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-<<<<<<< HEAD
-=======
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
->>>>>>> 762d8d3c86a60385dee630e7bbc3c49c1bc742ba
 
 
 # Quick-start development settings - unsuitable for production
@@ -30,11 +27,7 @@ SECRET_KEY = '5-po0+miq_v)-@pb2u5(9!&o22&r7@bod_a*&0ow_ygy1d^#hn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-<<<<<<< HEAD
-ALLOWED_HOSTS = []
-=======
 ALLOWED_HOSTS = ['aniketmovieapp.herokuapp.com', '127.0.0.1']
->>>>>>> 762d8d3c86a60385dee630e7bbc3c49c1bc742ba
 
 
 # Application definition
@@ -51,10 +44,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-<<<<<<< HEAD
-=======
     'whitenoise.middleware.WhiteNoiseMiddleware',
->>>>>>> 762d8d3c86a60385dee630e7bbc3c49c1bc742ba
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -91,17 +81,12 @@ AUTH_USER_MODEL = 'App.Account'
 
 DATABASES = {
     'default': {
-<<<<<<< HEAD
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-=======
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd874dg5s0nou3v',
-        'HOST': 'ec2-54-87-112-29.compute-1.amazonaws.com',
-        'PORT': '5432   ',
-        'USER': 'ifmnuoxsjayrkq',
-        'PASSWORD': '8ac01c37d2814469f5bd034d14853fdda215a06acdd0f59858ea00e611eac0cd',
->>>>>>> 762d8d3c86a60385dee630e7bbc3c49c1bc742ba
+        'NAME': 'movie_app',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        'USER': 'aniketchoudhary',
+        'PASSWORD': '',
     }
 }
 
@@ -147,11 +132,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "media"),
 ]
 STATIC_URL = '/static/'
-<<<<<<< HEAD
-=======
 #  Add configuration for static files storage using whitenoise
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 import dj_database_url 
 prod_db  =  dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(prod_db)
->>>>>>> 762d8d3c86a60385dee630e7bbc3c49c1bc742ba
