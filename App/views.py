@@ -104,7 +104,7 @@ def search_results(request):
             return JsonResponse({"cast":movie_cast, "trailer": trailer})
     fav_mov_list = Movie.objects.all()
     search = request.GET.get('search')
-    url = f'{base_url}search/movie/?api_key={my_api_key}&language=en-US&query={search}&page=1'
+    url = f'{base_url}search/movie?api_key={my_api_key}&language=en-US&query={search}&page=1'
     response = requests.get(url)
     l = response.json()['results']
     movies = []
